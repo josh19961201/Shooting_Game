@@ -116,7 +116,7 @@
 
           const rand = Math.ceil(Math.random() * 10) //設定隨機常數1-10
 
-          if (rand > 1 && rand !== 8) {
+          if (rand > 1 && $(`.greenBall`).length < 6 && rand !== 8) {
             //球生成位置
             const top = `${Math.round(Math.random() * 500)}px`
             const left = `${Math.round(Math.random() * 800)}px`
@@ -132,7 +132,7 @@
             move(greenBall)
           }
 
-          if (rand < 4) {
+          if (rand < 4 && $(`.purpleBall`).length < 3) {
             const top = `${Math.round(Math.random() * 500)}px`
             const left = `${Math.round(Math.random() * 800)}px`
 
@@ -145,7 +145,7 @@
             move(purpleBall)
           }
 
-          if (rand > 8) {
+          if (rand > 8 && $(`.orangeBall`).length < 2) {
             const top = `${Math.round(Math.random() * 500)}px`
             const left = `${Math.round(Math.random() * 800)}px`
 
@@ -208,10 +208,13 @@
       // 擊中球的事件，因為球是後來產生的，所以使用監聽
       $(`#game`).on(`click`, `.ball`, function () {
         if ($(this).hasClass('orangeBall')) {
+          $(this).removeClass('orangeBall')
           score += 5
         } else if ($(this).hasClass('purpleBall')) {
+          $(this).removeClass('purpleBall')
           score += 3
         } else {
+          $(this).removeClass('greenleBall')
           score++
         }
         $(this).attr(`src`, `./imgs/explotion.gif`) //將圖片替換成爆炸
