@@ -11,30 +11,37 @@
     />
     <style>
       body {
-        width: 100vw;
-        height: 100vh;
-        overflow: hidden;
-        background: url(./imgs/background.jpg) center/cover;
+        font-family: '微軟正黑體';
       }
       #container {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 100%;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        background: url(./imgs/background.jpg) center/cover;
       }
       #info {
         width: 900px;
         height: 120px;
         border-radius: 10px;
-        background-color: #00000055;
+        background-color: #fff3;
         margin-bottom: 15px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        text-align: center;
+        line-height: 3rem;
+        font-weight: bold;
+        font-size: 2rem;
       }
       #game {
         width: 900px;
         height: 600px;
         border-radius: 10px;
-        background-color: #00000055;
+        background-color: #fff3;
         position: relative;
         cursor: url(./imgs/cursor.ico) 50 50, auto;
         margin-top: 15px;
@@ -51,16 +58,22 @@
       .exolotion {
         pointer-events: none;
       }
+      #btn-start {
+        border: none;
+        padding: 30px;
+        border-radius: 10px;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
     <div id="container">
       <div id="info">
-        <p>分數：<span id="text-score">0</span>分</p>
-        <p>剩餘：<span id="text-time">0</span>秒</p>
-        <p>最高分玩家：<span id="text-highscorename"></span></p>
-        <p>最高分：<span id="text-highscore">0</span>分</p>
-        <input type="button" value="開始遊戲" id="btn-start" />
+        <input type="button" value="開始" id="btn-start" />
+        <p>分數<br /><span id="text-score">0</span>分</p>
+        <p>剩餘<br /><span id="text-time">0</span>秒</p>
+        <p>最高分玩家<br /><span id="text-highscorename"></span></p>
+        <p>最高分<br /><span id="text-highscore">0</span>分</p>
       </div>
       <div id="game"></div>
     </div>
@@ -105,7 +118,7 @@
         // 重設分數及倒數秒數
         score = 0
         $(`#text-score`).text(score) //改分數的文字
-        countdown = 30
+        countdown = 5
         $(`#text-time`).text(countdown) //改倒數的文字
 
         // 開始計時器------------------------------
@@ -114,9 +127,9 @@
           countdown--
           $(`#text-time`).text(countdown)
 
-          const rand = Math.ceil(Math.random() * 10) //設定隨機常數1-10
+          const rand = Math.ceil(Math.random() * 10) //設定隨機常數0-10
 
-          if (rand > 1 && $(`.greenBall`).length < 6 && rand !== 8) {
+          if (rand >= 5 && $(`.greenBall`).length < 5) {
             //球生成位置
             const top = `${Math.round(Math.random() * 500)}px`
             const left = `${Math.round(Math.random() * 800)}px`
@@ -132,7 +145,7 @@
             move(greenBall)
           }
 
-          if (rand < 4 && $(`.purpleBall`).length < 3) {
+          if (rand >= 2 && rand <= 4 && $(`.purpleBall`).length < 2) {
             const top = `${Math.round(Math.random() * 500)}px`
             const left = `${Math.round(Math.random() * 800)}px`
 
@@ -145,7 +158,7 @@
             move(purpleBall)
           }
 
-          if (rand > 8 && $(`.orangeBall`).length < 2) {
+          if (rand <= 1 && $(`.orangeBall`).length < 1) {
             const top = `${Math.round(Math.random() * 500)}px`
             const left = `${Math.round(Math.random() * 800)}px`
 
@@ -172,7 +185,7 @@
               // 破紀錄的視窗，使用sweetalert2製作
               swal
                 .fire({
-                  icon: 'info',
+                  padding: '10px 0 30px',
                   title: '時間到',
                   text: `破紀錄了，你得到${score}分`,
                   inputPlaceholder: `請輸入名字`,
@@ -196,7 +209,7 @@
                 })
             } else {
               swal.fire({
-                icon: `info`,
+                padding: '10px 0 30px',
                 title: `時間到`,
                 text: `你得到${score}分`
               })
@@ -214,7 +227,7 @@
           $(this).removeClass('purpleBall')
           score += 3
         } else {
-          $(this).removeClass('greenleBall')
+          $(this).removeClass('greenBall')
           score++
         }
         $(this).attr(`src`, `./imgs/explotion.gif`) //將圖片替換成爆炸
