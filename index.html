@@ -27,7 +27,7 @@
       }
       #info {
         width: 900px;
-        height: 120px;
+        height: 130px;
 
         background-color: #ffffd6;
         color: #dd4d3e;
@@ -59,16 +59,30 @@
         -webkit-user-drag: none;
         height: 100px;
       }
-      .ball {
-      }
       .exolotion {
         pointer-events: none;
       }
       #btn-start {
         border: none;
-        padding: 30px;
+        padding: 10px 30px;
         border-radius: 10px;
         cursor: pointer;
+        color: #dd4d3e;
+        font-family: 'Russo One', '微軟正黑體';
+        font-size: 1.3rem;
+        border: 2px solid #dd4d3e;
+      }
+      #text-score,
+      #text-time,
+      #text-highscorename,
+      #text-highscore {
+        color: #387995;
+      }
+      .infoText {
+        height: 80%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
       }
     </style>
   </head>
@@ -80,13 +94,23 @@
           START
         </button>
 
-        <p>SCORE<br /><span id="text-score">0</span></p>
+        <div class="infoText">
+          <span> SCORE</span><span id="text-score">0</span>
+        </div>
 
-        <p>GAME<br />TIME<br /><span id="text-time">0</span></p>
+        <div class="infoText">
+          <span>GAME</span><span>TIME</span><span id="text-time">0</span>
+        </div>
 
-        <p>RECORD<br />HOLDER<br /><span id="text-highscorename"></span></p>
+        <div class="infoText">
+          <span>RECORD</span><span>HOLDER</span
+          ><span id="text-highscorename"></span>
+        </div>
 
-        <p>TOP SCORE<br />RECORD<br /><span id="text-highscore">0</span></p>
+        <div class="infoText">
+          <span>TOP SCORE</span><span>RECORD</span
+          ><span id="text-highscore"></span>
+        </div>
       </div>
       <div id="game"></div>
     </div>
@@ -103,7 +127,7 @@
 
       const highscore = localStorage.shootinggame
         ? JSON.parse(localStorage.shootinggame)
-        : { name: '', score: 0 }
+        : { name: '-', score: '-' }
       $('#text-highscorename').text(highscore.name)
       $('#text-highscore').text(highscore.score)
 
@@ -131,7 +155,7 @@
         // 重設分數及倒數秒數
         score = 0
         $(`#text-score`).text(score) //改分數的文字
-        countdown = 60
+        countdown = 30
         $(`#text-time`).text(countdown) //改倒數的文字
 
         // 開始計時器------------------------------
@@ -142,7 +166,7 @@
 
           const rand = Math.ceil(Math.random() * 10) //設定隨機常數0-10
 
-          if (rand >= 5 && $(`.greenBall`).length < 5) {
+          if (rand >= 4 && $(`.greenBall`).length < 10) {
             //球生成位置
             const top = `${Math.round(Math.random() * 500)}px`
             const left = `${Math.round(Math.random() * 800)}px`
@@ -158,7 +182,7 @@
             move(greenBall)
           }
 
-          if (rand >= 2 && rand <= 4 && $(`.purpleBall`).length < 2) {
+          if (rand >= 1 && rand <= 5 && $(`.purpleBall`).length < 5) {
             const top = `${Math.round(Math.random() * 500)}px`
             const left = `${Math.round(Math.random() * 800)}px`
 
@@ -171,7 +195,7 @@
             move(purpleBall)
           }
 
-          if (rand <= 1 && $(`.orangeBall`).length < 1) {
+          if (rand <= 1 && $(`.orangeBall`).length < 3) {
             const top = `${Math.round(Math.random() * 500)}px`
             const left = `${Math.round(Math.random() * 800)}px`
 
@@ -199,14 +223,14 @@
               swal
                 .fire({
                   padding: '10px 0 30px',
-                  title: '時間到',
-                  text: `破紀錄了，你得到${score}分`,
-                  inputPlaceholder: `請輸入名字`,
+                  title: `TIME'S UP`,
+                  text: `BREAK THE RECORD ! YOU GOT ${score} POINTS`,
+                  inputPlaceholder: `ENTER YOUR NAME`,
                   input: `text`,
                   inputAttributes: {
                     required: true //設定名字欄位為必填
                   },
-                  validationMessage: `名稱必填`,
+                  validationMessage: `REQUIRED`,
                   allowOutsideClick: false,
                   allowEscapeKey: false
                 })
@@ -223,8 +247,8 @@
             } else {
               swal.fire({
                 padding: '10px 0 30px',
-                title: `時間到`,
-                text: `你得到${score}分`
+                title: `TIME'S UP`,
+                text: `YOU GOT ${score} POINTS`
               })
             }
           }
